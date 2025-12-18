@@ -1,4 +1,4 @@
-import {createStore, compose, bindActionCreators} from "redux";
+import {createStore, compose, bindActionCreators, applyMiddleware} from "redux";
 
 const INITIAL_STATE = {value: 0}
 const INCREMENT = "INCREMENT";
@@ -44,7 +44,21 @@ const logStateEnhancer = (createStore) => (reducer, initalState = INITIAL_STATE)
 
     return createStore(logReducer, initalState);
 }
-const store = createStore(reducer, compose(logStateEnhancer, monitorEnhancer));
+
+// middlewares build on top of the primitive enhancers - enhancers provide more freedom and flexibility but middlewares are a more convenient and standardized way of intercepting actions
+const logMiddleware = store => next => action => {
+    console.log("old state", store.getState(), action);
+    next(action);
+    console.log("new state", store.getState(), action);
+}
+
+const monitorMiddleware = store => next => action => {
+    const start = performance.now();
+    next(action);
+    const end = performance.now();
+    console.log(end - start);
+}
+const store = createStore(reducer, applyMiddleware(logMiddleware, monitorMiddleware));
 
 const actions = bindActionCreators({INCREMENT_ACTION, DECREMENT_ACTION}, store.dispatch);
 actions.DECREMENT_ACTION();
