@@ -1,4 +1,4 @@
-import {compose, createStore, bindActionCreators} from "Redux";
+import {compose, createStore, bindActionCreators} from "redux";
 
 const initialState = {value: 0};
 const INCREMENT = "INCREMENT";
@@ -32,11 +32,10 @@ const subscriber = () => console.log("SUBSCRIBER", store.getState());
 store.subscribe(subscriber);
 
 // bind action creators allows us to shorthand the dispatch to simply do this:
-const actions = bindActionCreators(incrementAction, decrementAction, addAction);
+const actions = bindActionCreators({incrementAction, decrementAction, addAction}, store.dispatch);
 console.log(actions);
-incrementAction();
-decrementAction();
-addAction();
+actions.incrementAction();
+actions.decrementAction();
 // instead of 
 // store.dispatch(incrementAction());
 // store.dispatch(decrementAction());
