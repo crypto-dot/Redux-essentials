@@ -18,7 +18,7 @@ export const Task = ({ taskId }) => {
         <Checkbox
           id={`task-${taskId}`}
           checked={task.complete}
-          onChange={(event) => dispatch(toggleTask(task.id, event.currentTarget.checked))}
+          onChange={(event) => dispatch(toggleTask( task.id, event.currentTarget.checked))}
         />
         <Label htmlFor={`task-${taskId}`}>{task.title}</Label>
       </Flex>

@@ -22,10 +22,19 @@ export const taskSlice = createSlice({
         toggle: (state, action) => {
             const task = state.find(task => task.id === action.payload.id);
             task.completed = action.payload.completed;
+        },
+        assignTo: (state, action) => {
+            console.log(action.payload);
+            const task = state.find(elm => elm.id == action.payload.taskId);
+            task.assignedTo = action.payload.humanId;
         }
     }
 });
 
 export const toggleTask = createAction("tasks/toggle", (id, completed) => ({
     payload: {id, completed}
+}));
+
+export const assignTo = createAction("tasks/assignTo", (taskId, humanId) => ({
+    payload: {taskId, humanId}
 }));
